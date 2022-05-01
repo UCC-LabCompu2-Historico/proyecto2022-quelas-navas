@@ -1,0 +1,67 @@
+body 
+{
+    background-color: rgb(24, 24, 24);
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.logo 
+{
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 100px;
+    color:yellow;
+}
+
+.caja 
+{
+    width: 500px;
+    height: 500px;
+    background-color: transparent;
+    margin: auto;
+    text-align: center;
+    border: 2px solid yellow;
+}
+
+.button 
+{
+    margin-top: 55px;/*espacio entre botones*/
+    padding-top: 10px;/*expacio del texto al borde superior del boton*/
+    padding-bottom: 10px;/*expacio del texto al borde inferior del boton*/
+    padding-left: 80px;
+    padding-right: 80px;
+    background-color: transparent;
+    border: 2px solid yellow;
+    color: yellow;
+    font-size: 16px;
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.button:hover
+{
+    cursor: pointer;
+    background-color: rgb(176, 176, 19);
+}
+
+a:link,a:visited,h2
+{
+    color: yellow;
+}
+
+h3
+{
+    color: yellow;
+    margin-top: 60px;
+    
+}
+
+.opciones
+{
+    padding-top: 15px;
+}
+
+h4
+{
+    color: rgb(185, 9, 9);
+    padding-top:20px;
+    padding-right: 400px;
+}
