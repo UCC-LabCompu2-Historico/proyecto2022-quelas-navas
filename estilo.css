@@ -71,3 +71,21 @@ p
     color: yellow;
     margin-top: 10px;
 }
+
+.centrar-juego 
+{
+    width: 600px;
+    height: 600px;
+    background-color: transparent;
+    margin: auto;
+    text-align: center;
+}
+
+#autores
+{
+    text-align: center;
+    padding-top:10px;
+    color: white;
+    font-size: 14px;
+    margin-top: 1%;
+}
