@@ -134,9 +134,6 @@ const teclas = {
     }
 }
 
-let ultima_tecla = ''
-let score = 0
-
 const mapa = [
     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
     ['-', ' ', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '-'],
@@ -156,6 +153,10 @@ const mapa = [
     ['-', '.', '.', '.', '.', '.', '.', '-', '.', '.', '.', '.', '.', '.', '-'],
     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
 ]
+
+let ultima_tecla = ''
+let score = 0
+let animacionId
 
 mapa.forEach((row, i) => {
     row.forEach((symbol, j) => {
@@ -181,6 +182,13 @@ mapa.forEach((row, i) => {
     })
 })
 
+/*
+Detecta cuando un circulo choca contra una pared
+@method circulo_colisiona_con_rectangulo
+@param {int} posicion, velocidad y radio - posicion: movimiento del circulo - velocidad: rapidez del circulo - radio: tamaño del circulo
+@param {int} posicion, alto y ancho - posicion: lugar de las parades - alto y ancho: tamaño del rectangulo
+@return Devuelve contra que pared choco el circulo
+*/
 function circulo_colisiona_con_rectangulo({circulo, rectangulo}) {
 
     const padding = Pared.width / 2 - circulo.radio - 1 //para poder modificarle la velocidad al fantasma, necesitamos que se detecte el padding con la colision
@@ -191,12 +199,15 @@ function circulo_colisiona_con_rectangulo({circulo, rectangulo}) {
         circulo.posicion.x - circulo.radio + circulo.velocidad.x <= rectangulo.posicion.x + rectangulo.width + padding)
 }
 
-let animacionId
-
+/* 
+Desarrollo del juego
+@mehod animacion
+@return Devuelve los posibles caminos que puede tomar el fantasma para no tener colisiones
+*/
 function animacion() {
     animacionId = requestAnimationFrame(animacion)
     c.clearRect(0, 0, canvas.width, canvas.height) // limpia los movimientos anteriores del pacman
-
+    //Deteccion de colision del jugador con la pared en direccion a -y
     if (teclas.w.pressed && ultima_tecla === 'w') {
         for (let i = 0; i < paredes.length; i++) {
             const Pared = paredes[i]
@@ -211,7 +222,9 @@ function animacion() {
                 player.velocidad.y = -2
             }
         }
-    } else if (teclas.a.pressed && ultima_tecla === 'a') {
+    } 
+    //Deteccion de colision del jugador con la pared en direccion a -x
+    else if (teclas.a.pressed && ultima_tecla === 'a') {
         for (let i = 0; i < paredes.length; i++) {
             const Pared = paredes[i]
             if (circulo_colisiona_con_rectangulo({
@@ -225,7 +238,9 @@ function animacion() {
                 player.velocidad.x = -2
             }
         }
-    } else if (teclas.s.pressed && ultima_tecla === 's') {
+    }
+     //Deteccion de colision del jugador con la pared en direccion a y
+    else if (teclas.s.pressed && ultima_tecla === 's') {
         for (let i = 0; i < paredes.length; i++) {
             const Pared = paredes[i]
             if (circulo_colisiona_con_rectangulo({
@@ -239,7 +254,9 @@ function animacion() {
                 player.velocidad.y = 2
             }
         }
-    } else if (teclas.d.pressed && ultima_tecla === 'd') {
+    } 
+    //Deteccion de colision del jugador con la pared en direccion a x
+    else if (teclas.d.pressed && ultima_tecla === 'd') {
         for (let i = 0; i < paredes.length; i++) {
             const Pared = paredes[i]
             if (circulo_colisiona_con_rectangulo({
@@ -254,10 +271,9 @@ function animacion() {
             }
         }
     }
-
+    //Deteccion de monedas e incremento del puntaje por monedas
     moneda.forEach((monedas, i) => {
         monedas.Dibujar()
-
         if (
             Math.hypot(
                 monedas.posicion.x - player.posicion.x, //"comer" las monedas
@@ -267,10 +283,9 @@ function animacion() {
             scoreEl.innerHTML = score
         }
     })
-
+    //Deteccion de jugador con pared que causa que la velocidad se modifique a 0
     paredes.forEach((Pared) => {
         Pared.Dibujar()
-
         if (circulo_colisiona_con_rectangulo({
             circulo: player,
             rectangulo: Pared
@@ -278,30 +293,31 @@ function animacion() {
         ) {
             player.velocidad.y = 0
             player.velocidad.x = 0
-
         }
     })
-    player.actualizar()
+    player.actualizar() //actualiza al jugador
 
+    //Deteccion de fantasmas con el jugador y con paredes
     ghost.forEach(ghost => {
         ghost.actualizar()
-
+        //Deteccion de fantasma con jugador, condicion para perder
         if (
             Math.hypot(
-                ghost.posicion.x - player.posicion.x, //"comer" las monedas
+                ghost.posicion.x - player.posicion.x,
                 ghost.posicion.y - player.posicion.y) < ghost.radio + player.radio) {
             cancelAnimationFrame(animacionId)
             alert("Game over")
         }
-
+        //Contador de monedas, condicion para ganar
         if (moneda.length === 0) {
             cancelAnimationFrame(animacionId)
             alert("You win")
         }
 
         const colisiones = []
-
+        //Deteccion de fantasmas cuando colisionan con las paredes
         paredes.forEach((Pared) => {
+            //Detecta colision con la derecha 
             if (!colisiones.includes('right') && circulo_colisiona_con_rectangulo({//!colisiones.includes('right') SI NO COLISIONA CON LA DERECHA
                 circulo: {...ghost, velocidad: {x: 2, y: 0}},
                 rectangulo: Pared
@@ -309,7 +325,7 @@ function animacion() {
             ) {
                 colisiones.push('right')
             }
-
+            //Detecta colision con la izquierda
             if (!colisiones.includes('left') && circulo_colisiona_con_rectangulo({
                 circulo: {...ghost, velocidad: {x: -2, y: 0}},
                 rectangulo: Pared
@@ -317,7 +333,7 @@ function animacion() {
             ) {
                 colisiones.push('left')
             }
-
+            //Detecta colision hacia arriba
             if (!colisiones.includes('up') && circulo_colisiona_con_rectangulo({
                 circulo: {...ghost, velocidad: {x: 0, y: -2}},
                 rectangulo: Pared
@@ -325,6 +341,7 @@ function animacion() {
             ) {
                 colisiones.push('up')
             }
+            //Detecta colision hacia abajo
             if (!colisiones.includes('down') && circulo_colisiona_con_rectangulo({
                 circulo: {...ghost, velocidad: {x: 0, y: 2}},
                 rectangulo: Pared
@@ -333,10 +350,12 @@ function animacion() {
                 colisiones.push('down')
             }
         })
-        if (colisiones.length > ghost.Colisiones_previas.length) {//GUARDAR LA POSICION ANTERIOR DEL FANTASMA
+        //GUARDAR LA POSICION ANTERIOR DEL FANTASMA
+        if (colisiones.length > ghost.Colisiones_previas.length) {
             ghost.Colisiones_previas = colisiones
         }
-        if (JSON.stringify(colisiones) !== JSON.stringify(ghost.Colisiones_previas)) {//JSON.stringify ES LA MEJOR MANERA DE DARSE CUENTA SI EL ARREY Y SU CONTENIDO SON IGUALES
+        //Deteccion de posibles caminos de los fantasmas
+        if (JSON.stringify(colisiones) !== JSON.stringify(ghost.Colisiones_previas)) {//JSON.stringify ES LA MEJOR MANERA DE DARSE CUENTA SI EL VECTOR Y SU CONTENIDO SON IGUALES
 
             if (ghost.velocidad.x > 0) ghost.Colisiones_previas.push('right')//
             else if (ghost.velocidad.x < 0) ghost.Colisiones_previas.push('left')
