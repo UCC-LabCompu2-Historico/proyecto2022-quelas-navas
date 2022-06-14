@@ -189,14 +189,14 @@ class Moneda{
       for (let i = 0; i<paredes.length; i++){
         const Pared = paredes[i]
         if(circulo_colisiona_con_rectangulo({
-          circulo: {...player, velocidad:{x:0, y:-5} },
+          circulo: {...player, velocidad:{x:0, y:-2} },
           rectangulo: Pared
         })
         ){
           player.velocidad.y = 0
           break
         } else{
-          player.velocidad.y = -5
+          player.velocidad.y = -2
         }
       }
     }
@@ -204,14 +204,14 @@ class Moneda{
       for (let i = 0; i<paredes.length; i++){
         const Pared = paredes[i]
         if(circulo_colisiona_con_rectangulo({
-          circulo: {...player, velocidad:{x: -5, y: 0} },
+          circulo: {...player, velocidad:{x: -2, y: 0} },
           rectangulo: Pared
         })
         ){
           player.velocidad.x = 0
           break
         } else{
-          player.velocidad.x = -5
+          player.velocidad.x = -2
         }
       }
     }
@@ -219,14 +219,14 @@ class Moneda{
       for (let i = 0; i<paredes.length; i++){
         const Pared = paredes[i]
         if(circulo_colisiona_con_rectangulo({
-          circulo: {...player, velocidad:{x: 0, y: 5} },
+          circulo: {...player, velocidad:{x: 0, y: 2} },
           rectangulo: Pared
         })
         ){
           player.velocidad.y = 0
           break
         } else{
-          player.velocidad.y = 5
+          player.velocidad.y = 2
         }
       }
     }
@@ -234,14 +234,14 @@ class Moneda{
       for (let i = 0; i<paredes.length; i++){
         const Pared = paredes[i]
         if(circulo_colisiona_con_rectangulo({
-          circulo: {...player, velocidad:{x: 5, y: 0} },
+          circulo: {...player, velocidad:{x: 2, y: 0} },
           rectangulo: Pared
         })
         ){
           player.velocidad.x = 0
           break
         } else{
-          player.velocidad.x = 5
+          player.velocidad.x = 2
         }
       }
     }
