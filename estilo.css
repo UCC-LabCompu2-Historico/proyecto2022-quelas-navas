@@ -7,7 +7,7 @@ body
 .logo 
 {
     text-align: center;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-bottom: 100px;
     color:yellow;
 }
@@ -79,6 +79,7 @@ p
     background-color: transparent;
     margin: auto;
     text-align: center;
+    margin-top: -100px;
 }
 
 #autores
@@ -89,3 +90,4 @@ p
     font-size: 14px;
     margin-top: 1%;
 }
+
