@@ -1,4 +1,4 @@
-const canvas = document.querySelector('canvas')
+const canvas = document.querySelector('canvas')//Declara un nombre de constante de solo lectura y ámbito de bloque.
 const c = canvas.getContext('2d');
 const scoreEl = document.querySelector('#scoreEl')
 
@@ -85,10 +85,14 @@ const moneda = []
 
 const paredes = []
 
+/* 
+Hace que los fantasmas tengan una posicion y velocidad preestablecia 
+@method ghost
+*/
 const ghost =
     [new Ghost({
         posicion: {
-            x: Pared.width * 13 + Pared.width / 2,
+            x: Pared.width * 13 + Pared.width / 2,//donde arranca el fantasma
             y: Pared.height * 15 + Pared.height / 2
         },
         velocidad: {x: -2, y: 0}
@@ -108,6 +112,10 @@ const ghost =
             velocidad: {x: 2, y: 0}
         })]
 
+/* 
+Hace que el jugador tengan una posicion y velocidad preestablecia 
+@method player
+*/
 const player = new Player({
     posicion: {
         x: Pared.width + Pared.width / 2,
@@ -119,6 +127,10 @@ const player = new Player({
     }
 })
 
+/* 
+Hace que las teclas W,A,S y D sean falsas por predeterminado
+@method teclas
+*/
 const teclas = {
     w: {
         pressed: false
@@ -156,8 +168,11 @@ const mapa = [
 
 let ultima_tecla = ''
 let score = 0
-let animacionId
-
+let animacionId//se usa para definir variables limitando su alcance
+/*
+Creacion de mapa
+@method mapa
+*/
 mapa.forEach((row, i) => {
     row.forEach((symbol, j) => {
         switch (symbol) {
@@ -201,7 +216,7 @@ function circulo_colisiona_con_rectangulo({circulo, rectangulo}) {
 
 /* 
 Desarrollo del juego
-@mehod animacion
+@method animacion
 @return Devuelve los posibles caminos que puede tomar el fantasma para no tener colisiones
 */
 function animacion() {
@@ -271,7 +286,11 @@ function animacion() {
             }
         }
     }
-    //Deteccion de monedas e incremento del puntaje por monedas
+
+    /* 
+    Deteccion de monedas e incremento del puntaje por monedas
+    @method moneda
+    */
     moneda.forEach((monedas, i) => {
         monedas.Dibujar()
         if (
@@ -283,7 +302,11 @@ function animacion() {
             scoreEl.innerHTML = score
         }
     })
-    //Deteccion de jugador con pared que causa que la velocidad se modifique a 0
+
+    /* 
+    Deteccion de jugador con pared que causa que la velocidad se modifique a 0
+    @method paredes
+    */
     paredes.forEach((Pared) => {
         Pared.Dibujar()
         if (circulo_colisiona_con_rectangulo({
@@ -297,7 +320,10 @@ function animacion() {
     })
     player.actualizar() //actualiza al jugador
 
-    //Deteccion de fantasmas con el jugador y con paredes
+    /* 
+    Deteccion de fantasmas con el jugador y con paredes
+    @method ghost
+    */
     ghost.forEach(ghost => {
         ghost.actualizar()
         //Deteccion de fantasma con jugador, condicion para perder
@@ -315,7 +341,11 @@ function animacion() {
         }
 
         const colisiones = []
-        //Deteccion de fantasmas cuando colisionan con las paredes
+
+        /* 
+        Deteccion de fantasmas cuando colisionan con las paredes
+        @method paredes
+        */
         paredes.forEach((Pared) => {
             //Detecta colision con la derecha 
             if (!colisiones.includes('right') && circulo_colisiona_con_rectangulo({//!colisiones.includes('right') SI NO COLISIONA CON LA DERECHA
@@ -362,9 +392,19 @@ function animacion() {
             else if (ghost.velocidad.y < 0) ghost.Colisiones_previas.push('up')
             else if (ghost.velocidad.y > 0) ghost.Colisiones_previas.push('down')
 
+            /* 
+            Hace que los fantasmas vean que dereccion pueden tomar
+            @method caminos
+            @return si no hay colisiones
+            */
             const caminos = ghost.Colisiones_previas.filter((collision) => {
                 return !colisiones.includes(collision)
             })
+            
+            /* 
+            Hace que la direccion que toman los fantasmas sean random
+            @method direction
+            */
             const direction = caminos[Math.floor(Math.random() * caminos.length)]//Math.floor VUELVE (Math.random() * caminos.length) EN INT POR SI NOS DA UN DECIMAL PARA QUE LO REDONDE
 
             switch (direction) {
