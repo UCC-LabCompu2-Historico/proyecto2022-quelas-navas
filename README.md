@@ -9,7 +9,7 @@
 - [ ] Quelas Maximiliano   -2113099-
 
 # GH Pages
-https://ucc-labcompu2.github.io/proyecto2022-quelas-navas/
+https://ucc-labcompu2-Historico.github.io/proyecto2022-quelas-navas/
 
 # Tecnologias utilizadas
 - [ ] Github
